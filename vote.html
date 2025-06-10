@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vote for Your Party</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #e7f0f7;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h2 {
+      margin-bottom: 30px;
+    }
+
+    .party {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      margin: 15px auto;
+      padding: 15px 20px;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .party img {
+      height: 50px;
+      width: auto;
+    }
+
+    .info {
+      flex: 1;
+      text-align: left;
+      margin-left: 20px;
+    }
+
+    .info h3 {
+      margin: 5px 0;
+    }
+
+    button {
+      padding: 10px 15px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .voted-msg {
+      font-weight: bold;
+      color: green;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Vote for Your Preferred Party</h2>
+
+  <div class="party">
+    <img src="https://upload.wikimedia.org/wikipedia/en/8/88/Bharatiya_Janata_Party_logo.svg" alt="BJP Logo">
+    <div class="info">
+      <h3>BJP</h3>
+      <p>Party Number: 1</p>
+    </div>
+    <button onclick="vote('BJP', this)">Vote</button>
+  </div>
+
+  <div class="party">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Indian_National_Congress_hand.svg" alt="Congress Logo" height="50" width=" 50">
+    <div class="info">
+      <h3>Congress</h3>
+      <p>Party Number: 2</p>
+    </div>
+    <button onclick="vote('Congress', this)">Vote</button>
+  </div>
+
+  <div class="party">
+    <img src="https://upload.wikimedia.org/wikipedia/en/d/d6/JD_S_symbol.png" alt="JDS Logo">
+    <div class="info">
+      <h3>JDS</h3>
+      <p>Party Number: 3</p>
+    </div>
+    <button onclick="vote('JDS', this)">Vote</button>
+  </div>
+
+  <div class="party">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Election-symbol-of-Independent-candidates-in-India.png/600px-Election-symbol-of-Independent-candidates-in-India.png" alt="Others Logo">
+    <div class="info">
+      <h3>Others</h3>
+      <p>Party Number: 4</p>
+    </div>
+    <button onclick="vote('Others', this)">Vote</button>
+  </div>
+
+  <div class="voted-msg" id="votedMsg"></div>
+
+  <script>
+    let hasVoted = false;
+
+    function vote(party, button) {
+      if (hasVoted) {
+        alert("You have already voted.");
+        return;
+      }
+
+      const confirmed = confirm(`Are you sure you want to vote for ${party}?`);
+
+      if (confirmed) {
+        hasVoted = true;
+        document.getElementById("votedMsg").textContent = `✅ You have successfully voted for ${party}. Thank you!`;
+
+        // Disable all buttons
+        const allButtons = document.querySelectorAll("button");
+        allButtons.forEach(btn => btn.disabled = true);
+      }
+    }
+  </script>
+</body>
+</html>
