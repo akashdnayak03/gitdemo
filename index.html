@@ -1,11 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 50px rgba(0,0,0,0.1);
+      width: 300px;
+    }
+    h2 {
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .distance-label {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 10px;
+      color: #333;
+    }
+    .block-message {
+      text-align: center;
+      color: red;
+      font-weight: bold;
+      margin-top: 10px;
+      display: none;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    .error {
+      color: red;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+  </style>
 </head>
 <body>
-    
+  <div class="login-container">
+    <h2>Online Voting Site </h2>
+
+    <label for="votingPlace">Voting Place</label>
+    <input type="text" id="votingPlace" placeholder="Enter your voting place" required />
+
+    <label for="pincode">Pincode</label>
+    <input type="text" id="pincode" placeholder="Enter your pincode" required />
+
+    <button onclick="calculateDistance()">Check Distance</button>
+
+    <div class="distance-label" id="distanceLabel">Distance: --</div>
+    <div class="block-message" id="blockMsg">Access Denied: Distance too short to login.</div>
+
+    <label for="voterId">Voter ID</label>
+    <input type="text" id="voterId" placeholder="Enter your Voter ID" disabled />
+
+    <label for="password">Enter OTP</label>
+    <input type="password" id="password" placeholder="Enter your OTP" disabled />
+
+    <div class="error" id="errorMsg"></div>
+    <button onclick="login()" id="loginBtn" disabled>Login</button>
+  </div>
+
+  <script>
+    function calculateDistance() {
+      const place = document.getElementById("votingPlace").value.trim();
+      const pin = document.getElementById("pincode").value.trim();
+      const distanceLabel = document.getElementById("distanceLabel");
+      const blockMsg = document.getElementById("blockMsg");
+
+      if (place === "" || pin === "") {
+        alert("Please enter both Voting Place and Pincode.");
+        return;
+      }
+
+     
+      const distance = Math.floor(Math.random() * 101) + 50;
+      distanceLabel.textContent = `Distance: ${distance} km`;
+
+      if (distance > 70) {
+        document.getElementById("voterId").disabled = false;
+        document.getElementById("password").disabled = false;
+        document.getElementById("loginBtn").disabled = false;
+        alert("your OTP is 1234")
+        blockMsg.style.display = "none";
+      } else {
+        alert("Access Denied: Distance too short.");
+        document.getElementById("voterId").disabled = true;
+        document.getElementById("password").disabled = true;
+        document.getElementById("loginBtn").disabled = true;
+        blockMsg.style.display = "block";
+      }
+    }
+
+    function login() {
+      const voterId = document.getElementById("voterId").value;
+      const password = document.getElementById("password").value;
+      const errorMsg = document.getElementById("errorMsg");
+
+      if (voterId === "voter123" && password === "1234") {
+        alert("Login successful!");
+        window.location.href = "vote.html";  
+      } else {
+        errorMsg.textContent = "Invalid Voter ID or Password.";
+      }
+    }
+  </script>
 </body>
 </html>
