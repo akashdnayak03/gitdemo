@@ -79,16 +79,16 @@
     <label for="votingPlace">Voting Place</label>
     <input type="text" id="votingPlace" placeholder="Enter your voting place" required />
 
-    <label for="pincode">Pincode</label>
-    <input type="text" id="pincode" placeholder="Enter your pincode" required />
-
     <button onclick="calculateDistance()" style="width: 120px;">Check Distance</button>
 
     <div class="distance-label" id="distanceLabel">Distance: --</div>
     <div class="block-message" id="blockMsg">Access Denied: Distance too short to login.</div>
 
     <label for="voterId">Voter ID</label>
-    <input type="text" id="voterId" placeholder="Enter your Voter ID" disabled />
+    <input type="text" id="voterId" placeholder="Eg : ABC1234567 " disabled />
+
+    <label for="adhar"> Enter Adhar Number</label>
+    <input type="number" id = "adhar" placeholder="Eg : 1234 1234 1234">
 
     <button onclick="getotp()" id="getotp" style="width: 100px;">Get OTP</button>
 
@@ -101,18 +101,18 @@
 
   <script>
     let Otp = "";
+      document.getElementById("adhar").disabled=true;
       document.getElementById("getotp").disabled = true;
       document.getElementById("voterId").disabled = true;
       document.getElementById("password").disabled = true;
       document.getElementById("loginBtn").disabled = true;
     function calculateDistance() {
       const place = document.getElementById("votingPlace").value.trim();
-      const pin = document.getElementById("pincode").value.trim();
       const distanceLabel = document.getElementById("distanceLabel");
       const blockMsg = document.getElementById("blockMsg");
 
-      if (place === "" || pin === "") {
-        alert("Please enter both Voting Place and Pincode.");
+      if (place === "" ) {
+        alert("Please enter both Voting Place.");
         return;
       }
 
@@ -122,6 +122,7 @@
 
       if (distance > 70) {
         document.getElementById("voterId").disabled = false;
+        document.getElementById("adhar").disabled=false;
         document.getElementById("getotp").disabled = false;
         blockMsg.style.display = "none";
       } else {
@@ -130,6 +131,7 @@
         document.getElementById("password").disabled = true;
          document.getElementById("getotp").disabled = true;
         document.getElementById("loginBtn").disabled = true;
+        document.getElementById("adhar").disabled=true;
         blockMsg.style.display = "block";
       }
     }
@@ -137,16 +139,21 @@
     function getotp(){
 
       const errorMsg = document.getElementById("errorMsg");
-     const voterId = document.getElementById("voterId").value;
-    if(voterId === ""){
-      errorMsg.textContent = "enter VoterId";
+     const voterId = document.getElementById("voterId").value.trim();
+     const adhar = document.getElementById("adhar").value.trim().length;  
+     const pattern = /^[A-Z]{3}\d{7}$/; 
+    if(voterId === "" || adhar === ""){
+      errorMsg.textContent = "enter VoterId and Adhar number";
     }
     else{
-     if(voterId === "voter123"){
+     if(pattern.test(voterId) && adhar === 12){
        Otp = Math.floor(1000+Math.random()*10000).toString();
        alert(`your OTP is ${Otp}`);
       document.getElementById("password").disabled = false;
         document.getElementById("loginBtn").disabled = false;
+     }
+     else{
+      errorMsg.textContent = "Invalied voterId or Adhar Number"
      }
     }
     }
@@ -161,7 +168,7 @@
         alert("Login successful!");
         window.location.href = "vote.html";  
       } else {
-        errorMsg.textContent = "Invalid Voter ID or Pasword";
+        errorMsg.textContent = "Invalid OTP";
        
           document.body.style.backgroundColor = "red";
     setTimeout(() => {
