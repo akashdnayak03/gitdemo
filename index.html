@@ -162,7 +162,11 @@
         window.location.href = "vote.html";  
       } else {
         errorMsg.textContent = "Invalid Voter ID or Pasword";
-        document.body.style.backgroundColor = "red";
+       
+          document.body.style.backgroundColor = "red";
+    setTimeout(() => {
+      document.body.style.backgroundColor = "white";
+    }, 250);
       }
     }
   </script>
