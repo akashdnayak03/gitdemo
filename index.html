@@ -137,7 +137,7 @@
     }
 
     function getotp(){
-
+      
       const errorMsg = document.getElementById("errorMsg");
      const voterId = document.getElementById("voterId").value.trim();
      const adhar = document.getElementById("adhar").value.trim().length;  
@@ -154,6 +154,9 @@
      }
      else{
       errorMsg.textContent = "Invalied voterId or Adhar Number"
+      setTimeout(()=>{
+        errorMsg.textContent = "";
+      },3000)
      }
     }
     }
