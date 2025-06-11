@@ -62,6 +62,9 @@
     button:hover {
       background: #45a049;
     }
+    button:disabled{
+      display: none;
+    }
     .error {
       color: red;
       text-align: center;
@@ -79,13 +82,15 @@
     <label for="pincode">Pincode</label>
     <input type="text" id="pincode" placeholder="Enter your pincode" required />
 
-    <button onclick="calculateDistance()">Check Distance</button>
+    <button onclick="calculateDistance()" style="width: 120px;">Check Distance</button>
 
     <div class="distance-label" id="distanceLabel">Distance: --</div>
     <div class="block-message" id="blockMsg">Access Denied: Distance too short to login.</div>
 
     <label for="voterId">Voter ID</label>
     <input type="text" id="voterId" placeholder="Enter your Voter ID" disabled />
+
+    <button onclick="getotp()" id="getotp" style="width: 100px;">Get OTP</button>
 
     <label for="password">Enter OTP</label>
     <input type="password" id="password" placeholder="Enter your OTP" disabled />
@@ -95,6 +100,11 @@
   </div>
 
   <script>
+    let Otp = "";
+      document.getElementById("getotp").disabled = true;
+      document.getElementById("voterId").disabled = true;
+      document.getElementById("password").disabled = true;
+      document.getElementById("loginBtn").disabled = true;
     function calculateDistance() {
       const place = document.getElementById("votingPlace").value.trim();
       const pin = document.getElementById("pincode").value.trim();
@@ -107,30 +117,47 @@
       }
 
      
-      const distance = Math.floor(Math.random() * 101) + 50;
+      const distance = Math.floor(Math.random() * 100) + 25;
       distanceLabel.textContent = `Distance: ${distance} km`;
 
       if (distance > 70) {
         document.getElementById("voterId").disabled = false;
-        document.getElementById("password").disabled = false;
-        document.getElementById("loginBtn").disabled = false;
-        alert("your OTP is 1234")
+        document.getElementById("getotp").disabled = false;
         blockMsg.style.display = "none";
       } else {
         alert("Access Denied: Distance too short.");
         document.getElementById("voterId").disabled = true;
         document.getElementById("password").disabled = true;
+         document.getElementById("getotp").disabled = true;
         document.getElementById("loginBtn").disabled = true;
         blockMsg.style.display = "block";
       }
     }
 
+    function getotp(){
+
+      const errorMsg = document.getElementById("errorMsg");
+     const voterId = document.getElementById("voterId").value;
+    if(voterId === ""){
+      errorMsg.textContent = "enter VoterId";
+    }
+    else{
+     if(voterId === "voter123"){
+       Otp = Math.floor(357+Math.random()*10000).toString();
+       alert(`your OTP is ${Otp}`);
+      document.getElementById("password").disabled = false;
+        document.getElementById("loginBtn").disabled = false;
+     }
+    }
+    }
+
+
+
     function login() {
-      const voterId = document.getElementById("voterId").value;
       const password = document.getElementById("password").value;
       const errorMsg = document.getElementById("errorMsg");
 
-      if (voterId === "voter123" && password === "1234") {
+      if (password === Otp) {
         alert("Login successful!");
         window.location.href = "vote.html";  
       } else {
